@@ -10,7 +10,7 @@ You will be able to:
 - Apply predictive regression analysis with CART trees
 - Get the data ready for modeling
 - Tune the key hyper parameters based a various models developed during training 
-- Study the impact of tree pruning on the quality of predictions. 
+- Study the impact of tree pruning on the quality of predictions
 
 ## Boston Housing Dataset - Again ! 
 
