@@ -10,7 +10,7 @@ You will be able to:
 - Apply predictive regression analysis with CART trees
 - Get the data ready for modeling
 - Tune the key hyper parameters based a various models developed during training 
-- Study the impact of tree pruning on the quality of predictions. 
+- Study the impact of tree pruning on the quality of predictions
 
 ## Boston Housing Dataset - Again ! 
 
@@ -293,7 +293,23 @@ for i, col in enumerate(features.columns):
 ```
 
 
-![png](index_files/index_6_0.png)
+    ---------------------------------------------------------------------------
+
+    NameError                                 Traceback (most recent call last)
+
+    <ipython-input-3-49aca8312598> in <module>()
+          4 for i, col in enumerate(features.columns):
+          5     plt.subplot(1, 3, i+1)
+    ----> 6     plt.plot(data[col], prices, 'o')
+          7     plt.title(col)
+          8     plt.xlabel(col)
+
+
+    NameError: name 'prices' is not defined
+
+
+
+![png](index_files/index_6_1.png)
 
 
 
