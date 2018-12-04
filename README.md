@@ -285,7 +285,7 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(20, 5))
 for i, col in enumerate(features.columns):
     plt.subplot(1, 3, i+1)
-    plt.plot(data[col], prices, 'o')
+    plt.plot(data[col], target, 'o')
     plt.title(col)
     plt.xlabel(col)
     plt.ylabel('Prices')
@@ -293,23 +293,7 @@ for i, col in enumerate(features.columns):
 ```
 
 
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    <ipython-input-3-49aca8312598> in <module>()
-          4 for i, col in enumerate(features.columns):
-          5     plt.subplot(1, 3, i+1)
-    ----> 6     plt.plot(data[col], prices, 'o')
-          7     plt.title(col)
-          8     plt.xlabel(col)
-
-
-    NameError: name 'prices' is not defined
-
-
-
-![png](index_files/index_6_1.png)
+![png](index_files/index_6_0.png)
 
 
 
