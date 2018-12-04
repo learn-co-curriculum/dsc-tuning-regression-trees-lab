@@ -1,5 +1,5 @@
 
-# Regression Trees and Model Optimization
+# Regression Trees and Model Optimization - Lab
 
 ## Introduction
 
