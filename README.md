@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this final lab, we shall see how to apply regression analysis using CART trees for regression, with some hyper parameter tuning as we saw in the case of classification. For a comparison of predictive capabilities and computational cost, we shall work the "Boston Housing" dataset. This will allow us to compare different regression approaches in terms of their accuracy and cost involved. 
+In this final lab, we'll see how to apply regression analysis using CART trees for regression while making use of some hyperparameter tuning to improve our model. For a comparison of predictive capabilities and computational cost, we'll work the "Boston Housing" dataset. This will allow us to compare different regression approaches in terms of their accuracy and cost involved.
 
 ## Objectives
 You will be able to:
@@ -37,7 +37,7 @@ data.head()
 ```
 
     Boston housing dataset has 506 data points with 15 variables each.
-
+    
 
 
 
@@ -175,7 +175,7 @@ data.head()
 
 
 ## Identify Features and Target Data
-In this lab, we shall use three features from the Boston housing dataset: `'RM'`, `'LSTAT'`, and `'PTRATIO'`. For each data point:
+In this lab, we shall use three features from the Boston housing dataset: `'RM'`, `'LSTAT'`, and `'PTRATIO'`. You'll find a brief description of each predictor below:
 
 #### Features
 - `'RM'` is the average number of rooms among homes in the neighborhood.
@@ -183,7 +183,7 @@ In this lab, we shall use three features from the Boston housing dataset: `'RM'`
 - `'PTRATIO'` is the ratio of students to teachers in primary and secondary schools in the neighborhood.
 
 #### Target
-- `MEDV`' has been multiplicatively scaled to account for 35 years of market inflation.
+- `MEDV`',the median value of the home.
 
 
 - Create dataframes for features and target as shown above. 
@@ -208,7 +208,7 @@ features.head()
     75%       25.000000
     max       50.000000
     Name: medv, dtype: float64
-
+    
 
 
 
@@ -293,17 +293,8 @@ for i, col in enumerate(features.columns):
 ```
 
 
-![png](index_files/index_6_0.png)
+![png](output_6_0.png)
 
-
-
-```python
-# Your observations here 
-
-# A positive relation for 'rm' and a negative relation for 'lstat' - Explain what positive and negative means
-# ptratio has a high variance and is not explaining the target well
-# 2 out of these three look like good predictors
-```
 
 ## Create Evaluation Metrics
 
@@ -378,15 +369,6 @@ score[0], score[1]
 
 
 
-
-```python
-# Your observations here 
-
-# The vanila model shows very low value for r-squared , and MSE is high compared to the the mean of output variable
-# Mainly because of overfitting, the tree is grown very deep to minimize the observations in leafs
-# Needs some tuning 
-```
-
 ## Hyperparameter Tuning 
 
 - Find the best tree depth for a depth range: 1-30
@@ -429,21 +411,12 @@ plt.show()
 ```
 
 
-![png](index_files/index_16_0.png)
+![png](output_14_0.png)
 
 
 
-![png](index_files/index_16_1.png)
+![png](output_14_1.png)
 
-
-
-```python
-# Your observations here 
-
-# Lowest value of MSE/Highest value of R2 reached at depth 6
-# A lot of fluctuation , no improvements as we increase the depth up from 6
-# Depth 5 - 6 seem optimal in this case
-```
 
 ## More Hyperparameter Tuning 
 
@@ -477,21 +450,12 @@ plt.show()
 ```
 
 
-![png](index_files/index_19_0.png)
+![png](output_16_0.png)
 
 
 
-![png](index_files/index_19_1.png)
+![png](output_16_1.png)
 
-
-
-```python
-# Your observations here 
-
-# optimal minimum split size is between 5 - 9 
-# The performance of the model drops outside this range 
-# We can say that 6(or 7) are the optimal values as its not advisable to choose border values (like 5 or 9)
-```
 
 # Run the "Optimized" Model 
 
@@ -520,58 +484,12 @@ score[0], score[1], regressor
 
 
 
-
-```python
-# Your observation
-
-# Wow -- a huge improvement  here 
-# HP optimization does have a strong impact on the performance of a model 
-# Maybe tuning some more parameters can lead to even better preditions !!
-```
-
-## Visualize the tree
-- Visualize the trained model as we did in previous sections
-- Show the labels for each variable being split in a node
-- Interpret the tree
-
-
-```python
-from sklearn.externals.six import StringIO  
-from IPython.display import Image  
-from sklearn.tree import export_graphviz
-import pydotplus
-dot_data = StringIO()
-export_graphviz(regressor, out_file=dot_data, filled=True, rounded=True,special_characters=True, feature_names=features.columns)
-graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
-Image(graph.create_png())
-```
-
-
-
-
-![png](index_files/index_25_0.png)
-
-
-
-
-```python
-#Your observations here 
-
-# Follow each path , starting from root node and create rules defined by the splits 
-
-# For example IF rm < 6.9 AND lstat <14.4 AND ptratio is less than 20.6 - The predicted value for the house is 10.29
-# we see 30+ samples and a low MSE to be confident about this rule 
-
-# Similar follow other paths to create rules
-# Differentiate between light and dark leaf nodes. 
-```
-
 ## Level Up - Optional 
 
-- How about bringing in some more features from the original dataset which may be good predictors
-- Also , Tune more more hyper parameters like max-features to find the optimal model 
+- How about bringing in some more features from the original dataset which may be good predictors?
+- Also , try tuning more hyperparameters like max-features to find the optimal version of the model.
 
 
 ## Summary 
 
-In this lab, we looked at applying a decision tree based regression analysis on the Boston Housing Dataset. We saw how to train various models to find the optimal values for pruning and limiting the growth of the trees. We also looked at how to extract some rules from visualizing trees , that might be used for decision making later. In the next section we shall look at running "Grid Searches" for identifying the best model while tuning all required hyper-parameters - at once. 
+In this lab, we looked at applying a decision tree based regression analysis on the Boston Housing Dataset. We saw how to train various models to find the optimal values for pruning and limiting the growth of the trees. We also looked at how to extract some rules from visualizing trees , that might be used for decision making later.
