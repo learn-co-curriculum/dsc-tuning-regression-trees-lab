@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this final lab, we'll see how to apply regression analysis using CART trees for regression while making use of some hyperparameter tuning to improve our model. For a comparison of predictive capabilities and computational cost, we'll work the "Boston Housing" dataset. This will allow us to compare different regression approaches in terms of their accuracy and cost involved. 
+In this final lab, we'll see how to apply regression analysis using CART trees for regression while making use of some hyperparameter tuning to improve our model. For a comparison of predictive capabilities and computational cost, we'll work the "Boston Housing" dataset. This will allow us to compare different regression approaches in terms of their accuracy and cost involved.
 
 ## Objectives
 You will be able to:
@@ -24,7 +24,7 @@ The dataset is available in the repo as `boston.csv`.
 ```
 
 ## Identify Features and Target Data
-In this lab, we'll use three features from the Boston housing dataset: `'RM'`, `'LSTAT'`, and `'PTRATIO'`. You'll find a brief description of each predictor below:
+In this lab, we shall use three features from the Boston housing dataset: `'RM'`, `'LSTAT'`, and `'PTRATIO'`. You'll find a brief description of each predictor below:
 
 #### Features
 - `'RM'` is the average number of rooms among homes in the neighborhood.
@@ -32,7 +32,7 @@ In this lab, we'll use three features from the Boston housing dataset: `'RM'`, `
 - `'PTRATIO'` is the ratio of students to teachers in primary and secondary schools in the neighborhood.
 
 #### Target
-- `MEDV`', the median value of the home. 
+- `MEDV`',the median value of the home.
 
 
 - Create dataframes for features and target as shown above. 
@@ -55,7 +55,7 @@ In this lab, we'll use three features from the Boston housing dataset: `'RM'`, `
 
 ## Create Evaluation Metrics
 
-- Create a function `performance(true, predicted)` to calculate and return the r-sqaured score and MSE for two equal sized arrays showing true and predicted values
+- Create a function `performance(true, predicted)` to calculate and return the r-squared score and MSE for two equal sized arrays showing true and predicted values
 - TEst the function with given data 
 
 
@@ -143,9 +143,8 @@ score
 ## Level Up - Optional 
 
 - How about bringing in some more features from the original dataset which may be good predictors?
-- Also , try tuning more hyperparameters like `max-features` to find the optimal version of the model. 
-
+- Also , try tuning more hyperparameters like max-features to find the optimal version of the model.
 
 ## Summary 
 
-In this lab, we looked at applying a decision tree based regression analysis on the Boston Housing Dataset. We saw how to train various models to find the optimal values for pruning and limiting the growth of the trees. We also looked at how to extract some rules from visualizing trees , that might be used for decision making later. 
+In this lab, we looked at applying a decision tree based regression analysis on the Boston Housing Dataset. We saw how to train various models to find the optimal values for pruning and limiting the growth of the trees. We also looked at how to extract some rules from visualizing trees , that might be used for decision making later.
