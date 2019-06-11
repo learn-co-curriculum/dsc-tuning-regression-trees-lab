@@ -37,7 +37,7 @@ data.head()
 ```
 
     Boston housing dataset has 506 data points with 15 variables each.
-    
+
 
 
 
@@ -208,7 +208,7 @@ features.head()
     75%       25.000000
     max       50.000000
     Name: medv, dtype: float64
-    
+
 
 
 
@@ -293,12 +293,12 @@ for i, col in enumerate(features.columns):
 ```
 
 
-![png](output_6_0.png)
+![png](index_files/index_6_0.png)
 
 
 ## Create Evaluation Metrics
 
-- Create a function `performance(true, predicted)` to calculate and return the r-sqaured score and MSE for two equal sized arrays showing true and predicted values
+- Create a function `performance(true, predicted)` to calculate and return the r-squared score and MSE for two equal sized arrays showing true and predicted values
 - TEst the function with given data 
 
 
@@ -411,11 +411,11 @@ plt.show()
 ```
 
 
-![png](output_14_0.png)
+![png](index_files/index_14_0.png)
 
 
 
-![png](output_14_1.png)
+![png](index_files/index_14_1.png)
 
 
 ## More Hyperparameter Tuning 
@@ -450,11 +450,11 @@ plt.show()
 ```
 
 
-![png](output_16_0.png)
+![png](index_files/index_16_0.png)
 
 
 
-![png](output_16_1.png)
+![png](index_files/index_16_1.png)
 
 
 # Run the "Optimized" Model 
@@ -488,7 +488,6 @@ score[0], score[1], regressor
 
 - How about bringing in some more features from the original dataset which may be good predictors?
 - Also , try tuning more hyperparameters like max-features to find the optimal version of the model.
-
 
 ## Summary 
 
