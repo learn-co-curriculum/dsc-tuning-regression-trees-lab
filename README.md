@@ -23,6 +23,163 @@ The dataset is available in the repo as `boston.csv`.
 # Your code here 
 ```
 
+
+```python
+# __SOLUTION__ 
+# Import libraries necessary for this project
+import numpy as np
+import pandas as pd
+
+# Pretty display for notebooks
+%matplotlib inline
+
+# Load the Boston housing dataset
+data = pd.read_csv('boston.csv')
+
+# Success
+print ("Boston housing dataset has {} data points with {} variables each.".format(*data.shape))
+
+data.head()
+```
+
+    Boston housing dataset has 506 data points with 15 variables each.
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>crim</th>
+      <th>zn</th>
+      <th>indus</th>
+      <th>chas</th>
+      <th>nox</th>
+      <th>rm</th>
+      <th>age</th>
+      <th>dis</th>
+      <th>rad</th>
+      <th>tax</th>
+      <th>ptratio</th>
+      <th>black</th>
+      <th>lstat</th>
+      <th>medv</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0.00632</td>
+      <td>18.0</td>
+      <td>2.31</td>
+      <td>0</td>
+      <td>0.538</td>
+      <td>6.575</td>
+      <td>65.2</td>
+      <td>4.0900</td>
+      <td>1</td>
+      <td>296</td>
+      <td>15.3</td>
+      <td>396.90</td>
+      <td>4.98</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>0.02731</td>
+      <td>0.0</td>
+      <td>7.07</td>
+      <td>0</td>
+      <td>0.469</td>
+      <td>6.421</td>
+      <td>78.9</td>
+      <td>4.9671</td>
+      <td>2</td>
+      <td>242</td>
+      <td>17.8</td>
+      <td>396.90</td>
+      <td>9.14</td>
+      <td>21.6</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>0.02729</td>
+      <td>0.0</td>
+      <td>7.07</td>
+      <td>0</td>
+      <td>0.469</td>
+      <td>7.185</td>
+      <td>61.1</td>
+      <td>4.9671</td>
+      <td>2</td>
+      <td>242</td>
+      <td>17.8</td>
+      <td>392.83</td>
+      <td>4.03</td>
+      <td>34.7</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>0.03237</td>
+      <td>0.0</td>
+      <td>2.18</td>
+      <td>0</td>
+      <td>0.458</td>
+      <td>6.998</td>
+      <td>45.8</td>
+      <td>6.0622</td>
+      <td>3</td>
+      <td>222</td>
+      <td>18.7</td>
+      <td>394.63</td>
+      <td>2.94</td>
+      <td>33.4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0.06905</td>
+      <td>0.0</td>
+      <td>2.18</td>
+      <td>0</td>
+      <td>0.458</td>
+      <td>7.147</td>
+      <td>54.2</td>
+      <td>6.0622</td>
+      <td>3</td>
+      <td>222</td>
+      <td>18.7</td>
+      <td>396.90</td>
+      <td>5.33</td>
+      <td>36.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 ## Identify Features and Target Data
 In this lab, we shall use three features from the Boston housing dataset: `'RM'`, `'LSTAT'`, and `'PTRATIO'`. You'll find a brief description of each predictor below:
 
@@ -43,6 +200,91 @@ In this lab, we shall use three features from the Boston housing dataset: `'RM'`
 # Your code here 
 ```
 
+
+```python
+# __SOLUTION__ 
+# Features and Target data
+target = data['medv']
+features = data[['rm', 'lstat', 'ptratio']]
+print(data.medv.describe())
+features.head()
+
+```
+
+    count    506.000000
+    mean      22.532806
+    std        9.197104
+    min        5.000000
+    25%       17.025000
+    50%       21.200000
+    75%       25.000000
+    max       50.000000
+    Name: medv, dtype: float64
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rm</th>
+      <th>lstat</th>
+      <th>ptratio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>6.575</td>
+      <td>4.98</td>
+      <td>15.3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6.421</td>
+      <td>9.14</td>
+      <td>17.8</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>7.185</td>
+      <td>4.03</td>
+      <td>17.8</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>6.998</td>
+      <td>2.94</td>
+      <td>18.7</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>7.147</td>
+      <td>5.33</td>
+      <td>18.7</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 ## Inspect Correlations 
 
 - Use scatter plots to show the correlation between chosen features and target variable
@@ -52,6 +294,25 @@ In this lab, we shall use three features from the Boston housing dataset: `'RM'`
 ```python
 # Your code here 
 ```
+
+
+```python
+# __SOLUTION__ 
+# Create scatter plots for each feature vs. target
+import matplotlib.pyplot as plt
+plt.figure(figsize=(20, 5))
+for i, col in enumerate(features.columns):
+    plt.subplot(1, 3, i+1)
+    plt.plot(data[col], target, 'o')
+    plt.title(col)
+    plt.xlabel(col)
+    plt.ylabel('Prices')
+    plt.tight_layout()
+```
+
+
+![png](index_files/index_9_0.png)
+
 
 ## Create Evaluation Metrics
 
@@ -80,6 +341,36 @@ score
 # [0.9228556485355649, 0.4719999999999998]
 ```
 
+
+```python
+# __SOLUTION__ 
+# Evaluation Metrics
+from sklearn.metrics import r2_score 
+from sklearn.metrics import mean_squared_error 
+
+def performance(y_true, y_predict):
+    """ Calculates and returns the performance score between 
+        true and predicted values based on the metric chosen. """
+    
+    # TODO: Calculate the performance score between 'y_true' and 'y_predict'
+    r2 = r2_score(y_true,y_predict)
+    mse = mean_squared_error(y_true,y_predict)
+    # Return the score
+    return [r2, mse]
+# Calculate the performance of this model
+score = performance([3, -0.5, 2, 7, 4.2], [2.5, 0.0, 2.1, 7.8, 5.3])
+score
+
+# [0.9228556485355649, 0.4719999999999998]
+```
+
+
+
+
+    [0.9228556485355649, 0.4719999999999998]
+
+
+
 ## Supervised Training 
 - For supervised learning, split the `features` and `target` datasets into training/test data (80/20). 
 - For reproducibility, use `random_state=42`
@@ -87,6 +378,15 @@ score
 
 ```python
 # Your code here 
+```
+
+
+```python
+# __SOLUTION__ 
+from sklearn.model_selection import train_test_split 
+
+# Split the data into training and testing subsets
+x_train, x_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
 ```
 
 ## Grow a Vanilla Regression Tree
@@ -103,6 +403,27 @@ score
 # (0.4712438851035674, 38.7756862745098)  - R2, MSE
 ```
 
+
+```python
+# __SOLUTION__ 
+# Run the Model and make predictions, Evaluate 
+from sklearn.tree import DecisionTreeRegressor
+regressor = DecisionTreeRegressor(random_state=45)
+regressor.fit(x_train, y_train)
+y_pred = regressor.predict(x_test)
+score = performance(y_test, y_pred)
+score[0], score[1]
+
+# (0.4712438851035674, 38.7756862745098)  - R2, MSE
+```
+
+
+
+
+    (0.47097115950374013, 38.795686274509805)
+
+
+
 ## Hyperparameter Tuning 
 
 - Find the best tree depth for a depth range: 1-30
@@ -117,6 +438,47 @@ score
 # Your code here 
 ```
 
+
+```python
+# __SOLUTION__ 
+import matplotlib.pyplot as plt
+plt.style.use('ggplot')
+
+# Identify the optimal tree depth for given data
+max_depths = np.linspace(1, 30, 30, endpoint=True)
+mse_results = []
+r2_results = []
+
+for max_depth in max_depths:
+    regressor = DecisionTreeRegressor(max_depth=max_depth, random_state=45)
+    regressor.fit(x_train, y_train)
+    y_pred = regressor.predict(x_test)
+    score = performance(y_test, y_pred)
+    r2_results.append(score[0])
+    mse_results.append(score[1])
+
+plt.figure(figsize=(12,6))
+plt.plot(max_depths, r2_results, 'b', label='R2')
+plt.xlabel('Tree Depth')
+plt.ylabel('R-squared')
+plt.legend()
+plt.show()
+plt.figure(figsize=(12,6))
+plt.plot(max_depths, mse_results, 'r', label='MSE')
+plt.xlabel('Tree Depth')
+plt.ylabel('MSE')
+plt.legend()
+plt.show()
+```
+
+
+![png](index_files/index_21_0.png)
+
+
+
+![png](index_files/index_21_1.png)
+
+
 ## More Hyperparameter Tuning 
 
 - Repeat the above process for `min_samples_split` parameter
@@ -130,6 +492,38 @@ score
 # Your code here 
 ```
 
+
+```python
+# __SOLUTION__ 
+# Identify the optimal minimum split size for given data
+min_samples_splits = np.arange(2,11)
+mse_results = []
+r2_results = []
+
+for min_samples_split in min_samples_splits:
+    regressor = DecisionTreeRegressor(min_samples_split=int(min_samples_split), random_state=45)
+    regressor.fit(x_train, y_train)
+    y_pred = regressor.predict(x_test)
+    score = performance(y_test, y_pred)
+    r2_results.append(score[0])
+    mse_results.append(score[1])
+
+plt.figure(figsize=(12,6))
+plt.plot(min_samples_splits, r2_results, 'b', label='R2')
+plt.show()
+plt.figure(figsize=(12,6))
+plt.plot(min_samples_splits, mse_results, 'r', label='MSE')
+plt.show()
+```
+
+
+![png](index_files/index_24_0.png)
+
+
+
+![png](index_files/index_24_1.png)
+
+
 # Run the "Optimized" Model 
 
 - Use the best values for max_depth and min_samples_split found in previous runs and run an optimized model with these values. 
@@ -139,6 +533,29 @@ score
 ```python
 # Your code here 
 ```
+
+
+```python
+# __SOLUTION__ 
+regressor = DecisionTreeRegressor(min_samples_split=6, max_depth=6, random_state=45)
+regressor.fit(x_train, y_train)
+y_pred = regressor.predict(x_test)
+score = performance(y_test, y_pred)
+score[0], score[1], regressor
+```
+
+
+
+
+    (0.7510017608643338,
+     18.259982876077185,
+     DecisionTreeRegressor(criterion='mse', max_depth=6, max_features=None,
+                max_leaf_nodes=None, min_impurity_decrease=0.0,
+                min_impurity_split=None, min_samples_leaf=1,
+                min_samples_split=6, min_weight_fraction_leaf=0.0,
+                presort=False, random_state=45, splitter='best'))
+
+
 
 ## Level Up - Optional 
 
