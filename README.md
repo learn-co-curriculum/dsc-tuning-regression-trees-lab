@@ -3,47 +3,64 @@
 
 ## Introduction
 
-In this final lab, we'll see how to apply regression analysis using CART trees for regression while making use of some hyperparameter tuning to improve our model. For a comparison of predictive capabilities and computational cost, we'll work the "Boston Housing" dataset. This will allow us to compare different regression approaches in terms of their accuracy and cost involved.
+In this lab, we'll see how to apply regression analysis using CART trees while making use of some hyperparameter tuning to improve our model. 
 
 ## Objectives
-You will be able to:
-- Apply predictive regression analysis with CART trees
-- Get the data ready for modeling
-- Tune the key hyper parameters based a various models developed during training 
-- Study the impact of tree pruning on the quality of predictions
 
-## Boston Housing Dataset - Again ! 
+In this lab you will: 
 
-The dataset is available in the repo as `boston.csv`. 
+- Perform the full process of cleaning data, tuning hyperparameters, creating visualizations, and evaluating decision tree models 
+- Determine the optimal hyperparameters for a decision tree model and evaluate performance 
 
-- Load the Dataset and print its head and dimensions
+## Boston Housing dataset - again! 
+
+The dataset is available in the file `'boston.csv'`. 
+
+- Import the dataset and print its `.head()` and dimensions: 
 
 
 ```python
-# Your code here 
+# Import necessary libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.style.use('ggplot')
+%matplotlib inline
+
+# Load the Boston housing dataset 
+data = None 
+
+# Print the first five rows 
+
+
+# Print the dimensions of data
+
 ```
 
-## Identify Features and Target Data
-In this lab, we shall use three features from the Boston housing dataset: `'RM'`, `'LSTAT'`, and `'PTRATIO'`. You'll find a brief description of each predictor below:
+## Identify features and target data 
+
+In this lab, we will use three features from the Boston housing dataset: `'RM'`, `'LSTAT'`, and `'PTRATIO'`: 
 
 #### Features
-- `'RM'` is the average number of rooms among homes in the neighborhood.
-- `'LSTAT'` is the percentage of homeowners in the neighborhood considered "lower class" (working poor).
-- `'PTRATIO'` is the ratio of students to teachers in primary and secondary schools in the neighborhood.
+- `'RM'` is the average number of rooms among homes in the neighborhood 
+- `'LSTAT'` is the percentage of homeowners in the neighborhood considered "lower class" (working poor) 
+- `'PTRATIO'` is the ratio of students to teachers in primary and secondary schools in the neighborhood 
 
 #### Target
-- `MEDV`',the median value of the home.
+- `MEDV`',the median value of the home 
 
-
-- Create dataframes for features and target as shown above. 
+- Create DataFrames for features and target as shown above 
 - Inspect the contents for validity 
 
 
 ```python
-# Your code here 
+# Features and target data
+target = None
+features = None
+
 ```
 
-## Inspect Correlations 
+## Inspect correlations 
 
 - Use scatter plots to show the correlation between chosen features and target variable
 - Comment on each scatter plot 
@@ -53,63 +70,88 @@ In this lab, we shall use three features from the Boston housing dataset: `'RM'`
 # Your code here 
 ```
 
-## Create Evaluation Metrics
+## Create evaluation metrics
 
-- Create a function `performance(true, predicted)` to calculate and return the r-squared score and MSE for two equal sized arrays showing true and predicted values
-- TEst the function with given data 
+- Import `r2_score` and `mean_squared_error` from `sklearn.metrics` 
+- Create a function `performance(true, predicted)` to calculate and return the r-squared score and MSE for two equal sized arrays for the given true and predicted values 
 
 
 ```python
-# Evaluation Metrics
 # Import metrics
 
+
+# Define the function
 def performance(y_true, y_predict):
     """ Calculates and returns the performance score between 
         true and predicted values based on the metric chosen. """
     
+    # Calculate the r2 score between 'y_true' and 'y_predict'
     
-    # Your code here 
     
+    # Calculate the mean squared error between 'y_true' and 'y_predict'
+    
+    
+    # Return the score
     
     pass
 
-# Calculate the performance - TEST
+
+# Test the function
 score = performance([3, -0.5, 2, 7, 4.2], [2.5, 0.0, 2.1, 7.8, 5.3])
 score
 
 # [0.9228556485355649, 0.4719999999999998]
 ```
 
-## Supervised Training 
-- For supervised learning, split the `features` and `target` datasets into training/test data (80/20). 
+## Split the data into training and test sets
+
+- Split `features` and `target` datasets into training/test data (80/20) 
 - For reproducibility, use `random_state=42`
 
 
 ```python
-# Your code here 
+from sklearn.model_selection import train_test_split 
+
+# Split the data into training and test subsets
+x_train, x_test, y_train, y_test = None
 ```
 
-## Grow a Vanilla Regression Tree
+## Grow a vanilla regression tree
 
+- Import the `DecisionTreeRegressor` class
 - Run a baseline model for later comparison using the datasets created above
-- Generate predictions for test dataset and calculate the performance measures using the function created above.
+- Generate predictions for test dataset and calculate the performance measures using the function created above 
 - Use `random_state=45` for tree instance
 - Record your observations
 
 
 ```python
-# Your code here 
+# Import DecisionTreeRegressor
 
-# (0.4712438851035674, 38.7756862745098)  - R2, MSE
+
+# Instantiate DecisionTreeRegressor 
+regressor = None
+
+# Fit the model to training data
+
+
+# Make predictions on the test data
+y_pred = None
+
+# Calculate performance using the performance() function 
+score = None
+score
+
+# [0.47097115950374013, 38.795686274509805]  - R2, MSE
 ```
 
-## Hyperparameter Tuning 
+## Hyperparameter tuning (I)
 
 - Find the best tree depth for a depth range: 1-30
-- Run the regressor repeatedly in a for loop for each depth value. 
+- Run the regressor repeatedly in a `for` loop for each depth value  
 - Use `random_state=45` for reproducibility
 - Calculate MSE and r-squared for each run 
-- Plot both performance measures, for all runs.
+- Plot both performance measures, for all runs 
 - Comment on the output 
 
 
@@ -117,22 +159,21 @@ score
 # Your code here 
 ```
 
-## More Hyperparameter Tuning 
+## Hyperparameter tuning (II)
 
-- Repeat the above process for `min_samples_split` parameter
-
-- Use a a range of values from 2-10 for this parameter 
+- Repeat the above process for `min_samples_split` 
+- Use a a range of values from 2-10 for this hyperparameter 
 - Use `random_state=45` for reproducibility
-- Visualize the output and comment on results as above
+- Visualize the output and comment on results as above 
 
 
 ```python
 # Your code here 
 ```
 
-# Run the "Optimized" Model 
+# Run the *optimized* model 
 
-- Use the best values for max_depth and min_samples_split found in previous runs and run an optimized model with these values. 
+- Use the best values for `max_depth` and `min_samples_split` found in previous runs and run an optimized model with these values 
 - Calculate the performance and comment on the output 
 
 
@@ -140,11 +181,11 @@ score
 # Your code here 
 ```
 
-## Level Up - Optional 
+## Level up (Optional)
 
 - How about bringing in some more features from the original dataset which may be good predictors?
-- Also , try tuning more hyperparameters like max-features to find the optimal version of the model.
+- Also, try tuning more hyperparameters like max-features to find the optimal version of the model 
 
 ## Summary 
 
-In this lab, we looked at applying a decision tree based regression analysis on the Boston Housing Dataset. We saw how to train various models to find the optimal values for pruning and limiting the growth of the trees. We also looked at how to extract some rules from visualizing trees , that might be used for decision making later.
+In this lab, we looked at applying a decision tree based regression analysis on the Boston Housing dataset. We saw how to train various models to find the optimal values for hyperparameters. 
