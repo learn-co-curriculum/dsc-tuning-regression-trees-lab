@@ -3,212 +3,109 @@
 
 ## Introduction
 
-In this final lab, we'll see how to apply regression analysis using CART trees for regression while making use of some hyperparameter tuning to improve our model. For a comparison of predictive capabilities and computational cost, we'll work the "Boston Housing" dataset. This will allow us to compare different regression approaches in terms of their accuracy and cost involved.
+In this lab, we'll see how to apply regression analysis using CART trees while making use of some hyperparameter tuning to improve our model. 
 
 ## Objectives
-You will be able to:
-- Apply predictive regression analysis with CART trees
-- Get the data ready for modeling
-- Tune the key hyper parameters based a various models developed during training 
-- Study the impact of tree pruning on the quality of predictions
 
-## Boston Housing Dataset - Again ! 
+In this lab you will: 
 
-The dataset is available in the repo as `boston.csv`. 
+- Perform the full process of cleaning data, tuning hyperparameters, creating visualizations, and evaluating decision tree models 
+- Determine the optimal hyperparameters for a decision tree model and evaluate performance 
 
-- Load the Dataset and print its head and dimensions
+## Boston Housing dataset - again! 
+
+The dataset is available in the file `'boston.csv'`. 
+
+- Import the dataset and print its `.head()` and dimensions: 
 
 
 ```python
-# Your code here 
+# Import necessary libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.style.use('ggplot')
+%matplotlib inline
+
+# Load the Boston housing dataset 
+data = None 
+
+# Print the first five rows 
+
+
+# Print the dimensions of data
+
 ```
 
 
 ```python
 # __SOLUTION__ 
-# Import libraries necessary for this project
+# Import necessary libraries
 import numpy as np
 import pandas as pd
-
-# Pretty display for notebooks
+import matplotlib.pyplot as plt
+plt.style.use('ggplot')
 %matplotlib inline
 
 # Load the Boston housing dataset
-data = pd.read_csv('boston.csv')
+data = pd.read_csv('boston.csv', index_col=0)
 
-# Success
-print ("Boston housing dataset has {} data points with {} variables each.".format(*data.shape))
-
-data.head()
+# Print the first five rows
+print(data.head())
+print("")
+# Print the dimensions of data
+print(data.shape)
 ```
 
-    Boston housing dataset has 506 data points with 15 variables each.
+          crim    zn  indus  chas    nox     rm   age     dis  rad  tax  ptratio  \
+    1  0.00632  18.0   2.31     0  0.538  6.575  65.2  4.0900    1  296     15.3   
+    2  0.02731   0.0   7.07     0  0.469  6.421  78.9  4.9671    2  242     17.8   
+    3  0.02729   0.0   7.07     0  0.469  7.185  61.1  4.9671    2  242     17.8   
+    4  0.03237   0.0   2.18     0  0.458  6.998  45.8  6.0622    3  222     18.7   
+    5  0.06905   0.0   2.18     0  0.458  7.147  54.2  6.0622    3  222     18.7   
+    
+        black  lstat  medv  
+    1  396.90   4.98  24.0  
+    2  396.90   9.14  21.6  
+    3  392.83   4.03  34.7  
+    4  394.63   2.94  33.4  
+    5  396.90   5.33  36.2  
+    
+    (506, 14)
 
 
+## Identify features and target data 
 
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Unnamed: 0</th>
-      <th>crim</th>
-      <th>zn</th>
-      <th>indus</th>
-      <th>chas</th>
-      <th>nox</th>
-      <th>rm</th>
-      <th>age</th>
-      <th>dis</th>
-      <th>rad</th>
-      <th>tax</th>
-      <th>ptratio</th>
-      <th>black</th>
-      <th>lstat</th>
-      <th>medv</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>0.00632</td>
-      <td>18.0</td>
-      <td>2.31</td>
-      <td>0</td>
-      <td>0.538</td>
-      <td>6.575</td>
-      <td>65.2</td>
-      <td>4.0900</td>
-      <td>1</td>
-      <td>296</td>
-      <td>15.3</td>
-      <td>396.90</td>
-      <td>4.98</td>
-      <td>24.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>0.02731</td>
-      <td>0.0</td>
-      <td>7.07</td>
-      <td>0</td>
-      <td>0.469</td>
-      <td>6.421</td>
-      <td>78.9</td>
-      <td>4.9671</td>
-      <td>2</td>
-      <td>242</td>
-      <td>17.8</td>
-      <td>396.90</td>
-      <td>9.14</td>
-      <td>21.6</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>0.02729</td>
-      <td>0.0</td>
-      <td>7.07</td>
-      <td>0</td>
-      <td>0.469</td>
-      <td>7.185</td>
-      <td>61.1</td>
-      <td>4.9671</td>
-      <td>2</td>
-      <td>242</td>
-      <td>17.8</td>
-      <td>392.83</td>
-      <td>4.03</td>
-      <td>34.7</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>0.03237</td>
-      <td>0.0</td>
-      <td>2.18</td>
-      <td>0</td>
-      <td>0.458</td>
-      <td>6.998</td>
-      <td>45.8</td>
-      <td>6.0622</td>
-      <td>3</td>
-      <td>222</td>
-      <td>18.7</td>
-      <td>394.63</td>
-      <td>2.94</td>
-      <td>33.4</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>0.06905</td>
-      <td>0.0</td>
-      <td>2.18</td>
-      <td>0</td>
-      <td>0.458</td>
-      <td>7.147</td>
-      <td>54.2</td>
-      <td>6.0622</td>
-      <td>3</td>
-      <td>222</td>
-      <td>18.7</td>
-      <td>396.90</td>
-      <td>5.33</td>
-      <td>36.2</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-## Identify Features and Target Data
-In this lab, we shall use three features from the Boston housing dataset: `'RM'`, `'LSTAT'`, and `'PTRATIO'`. You'll find a brief description of each predictor below:
+In this lab, we will use three features from the Boston housing dataset: `'RM'`, `'LSTAT'`, and `'PTRATIO'`: 
 
 #### Features
-- `'RM'` is the average number of rooms among homes in the neighborhood.
-- `'LSTAT'` is the percentage of homeowners in the neighborhood considered "lower class" (working poor).
-- `'PTRATIO'` is the ratio of students to teachers in primary and secondary schools in the neighborhood.
+- `'RM'` is the average number of rooms among homes in the neighborhood 
+- `'LSTAT'` is the percentage of homeowners in the neighborhood considered "lower class" (working poor) 
+- `'PTRATIO'` is the ratio of students to teachers in primary and secondary schools in the neighborhood 
 
 #### Target
-- `MEDV`',the median value of the home.
+- `MEDV`',the median value of the home 
 
-
-- Create dataframes for features and target as shown above. 
+- Create DataFrames for features and target as shown above 
 - Inspect the contents for validity 
 
 
 ```python
-# Your code here 
+# Features and target data
+target = None
+features = None
+
 ```
 
 
 ```python
 # __SOLUTION__ 
-# Features and Target data
+# Features and target data
 target = data['medv']
 features = data[['rm', 'lstat', 'ptratio']]
 print(data.medv.describe())
-features.head()
-
+print("")
+print(features.head())
 ```
 
     count    506.000000
@@ -220,72 +117,16 @@ features.head()
     75%       25.000000
     max       50.000000
     Name: medv, dtype: float64
+    
+          rm  lstat  ptratio
+    1  6.575   4.98     15.3
+    2  6.421   9.14     17.8
+    3  7.185   4.03     17.8
+    4  6.998   2.94     18.7
+    5  7.147   5.33     18.7
 
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>rm</th>
-      <th>lstat</th>
-      <th>ptratio</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>6.575</td>
-      <td>4.98</td>
-      <td>15.3</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>6.421</td>
-      <td>9.14</td>
-      <td>17.8</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>7.185</td>
-      <td>4.03</td>
-      <td>17.8</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>6.998</td>
-      <td>2.94</td>
-      <td>18.7</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>7.147</td>
-      <td>5.33</td>
-      <td>18.7</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-## Inspect Correlations 
+## Inspect correlations 
 
 - Use scatter plots to show the correlation between chosen features and target variable
 - Comment on each scatter plot 
@@ -311,30 +152,36 @@ for i, col in enumerate(features.columns):
 ```
 
 
-![png](index_files/index_9_0.png)
+![png](index_files/index_10_0.png)
 
 
-## Create Evaluation Metrics
+## Create evaluation metrics
 
-- Create a function `performance(true, predicted)` to calculate and return the r-squared score and MSE for two equal sized arrays showing true and predicted values
-- TEst the function with given data 
+- Import `r2_score` and `mean_squared_error` from `sklearn.metrics` 
+- Create a function `performance(true, predicted)` to calculate and return the r-squared score and MSE for two equal sized arrays for the given true and predicted values 
 
 
 ```python
-# Evaluation Metrics
 # Import metrics
 
+
+# Define the function
 def performance(y_true, y_predict):
     """ Calculates and returns the performance score between 
         true and predicted values based on the metric chosen. """
     
+    # Calculate the r2 score between 'y_true' and 'y_predict'
     
-    # Your code here 
     
+    # Calculate the mean squared error between 'y_true' and 'y_predict'
+    
+    
+    # Return the score
     
     pass
 
-# Calculate the performance - TEST
+
+# Test the function
 score = performance([3, -0.5, 2, 7, 4.2], [2.5, 0.0, 2.1, 7.8, 5.3])
 score
 
@@ -344,23 +191,26 @@ score
 
 ```python
 # __SOLUTION__ 
-# Evaluation Metrics
-from sklearn.metrics import r2_score 
-from sklearn.metrics import mean_squared_error 
+# Import metrics
+from sklearn.metrics import r2_score, mean_squared_error 
 
+# Define the function
 def performance(y_true, y_predict):
     """ Calculates and returns the performance score between 
         true and predicted values based on the metric chosen. """
     
-    # TODO: Calculate the performance score between 'y_true' and 'y_predict'
-    r2 = r2_score(y_true,y_predict)
-    mse = mean_squared_error(y_true,y_predict)
+    # Calculate the r2 score between 'y_true' and 'y_predict'
+    r2 = r2_score(y_true, y_predict)
+    
+    # Calculate the mean squared error between 'y_true' and 'y_predict'
+    mse = mean_squared_error(y_true, y_predict)
+    
     # Return the score
     return [r2, mse]
-# Calculate the performance of this model
+
+# Test the function
 score = performance([3, -0.5, 2, 7, 4.2], [2.5, 0.0, 2.1, 7.8, 5.3])
 score
-
 # [0.9228556485355649, 0.4719999999999998]
 ```
 
@@ -371,13 +221,17 @@ score
 
 
 
-## Supervised Training 
-- For supervised learning, split the `features` and `target` datasets into training/test data (80/20). 
+## Split the data into training and test sets
+
+- Split `features` and `target` datasets into training/test data (80/20) 
 - For reproducibility, use `random_state=42`
 
 
 ```python
-# Your code here 
+from sklearn.model_selection import train_test_split 
+
+# Split the data into training and test subsets
+x_train, x_test, y_train, y_test = None
 ```
 
 
@@ -385,52 +239,75 @@ score
 # __SOLUTION__ 
 from sklearn.model_selection import train_test_split 
 
-# Split the data into training and testing subsets
+# Split the data into training and test subsets
 x_train, x_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
 ```
 
-## Grow a Vanilla Regression Tree
+## Grow a vanilla regression tree
 
+- Import the `DecisionTreeRegressor` class
 - Run a baseline model for later comparison using the datasets created above
-- Generate predictions for test dataset and calculate the performance measures using the function created above.
+- Generate predictions for test dataset and calculate the performance measures using the function created above 
 - Use `random_state=45` for tree instance
 - Record your observations
 
 
 ```python
-# Your code here 
+# Import DecisionTreeRegressor
 
-# (0.4712438851035674, 38.7756862745098)  - R2, MSE
+
+# Instantiate DecisionTreeRegressor 
+regressor = None
+
+# Fit the model to training data
+
+
+# Make predictions on the test data
+y_pred = None
+
+# Calculate performance using the performance() function 
+score = None
+score
+
+# [0.47097115950374013, 38.795686274509805]  - R2, MSE
 ```
 
 
 ```python
 # __SOLUTION__ 
-# Run the Model and make predictions, Evaluate 
+# Import DecisionTreeRegressor
 from sklearn.tree import DecisionTreeRegressor
-regressor = DecisionTreeRegressor(random_state=45)
-regressor.fit(x_train, y_train)
-y_pred = regressor.predict(x_test)
-score = performance(y_test, y_pred)
-score[0], score[1]
 
-# (0.4712438851035674, 38.7756862745098)  - R2, MSE
+# Instantiate DecisionTreeRegressor 
+regressor = DecisionTreeRegressor(random_state=45)
+
+# Fit the model to training data
+regressor.fit(x_train, y_train)
+
+# Make predictions on the test data
+y_pred = regressor.predict(x_test)
+
+# Calculate performance using the performance() function 
+score = performance(y_test, y_pred)
+score
+
+# [0.47097115950374013, 38.795686274509805]  - R2, MSE
 ```
 
 
 
 
-    (0.47097115950374013, 38.795686274509805)
+    [0.47097115950374013, 38.795686274509805]
 
 
 
-## Hyperparameter Tuning 
+## Hyperparameter tuning (I)
 
 - Find the best tree depth for a depth range: 1-30
-- Run the regressor repeatedly in a for loop for each depth value. 
+- Run the regressor repeatedly in a `for` loop for each depth value  
 - Use `random_state=45` for reproducibility
 - Calculate MSE and r-squared for each run 
-- Plot both performance measures, for all runs.
+- Plot both performance measures, for all runs 
 - Comment on the output 
 
 
@@ -441,9 +318,6 @@ score[0], score[1]
 
 ```python
 # __SOLUTION__ 
-import matplotlib.pyplot as plt
-plt.style.use('ggplot')
-
 # Identify the optimal tree depth for given data
 max_depths = np.linspace(1, 30, 30, endpoint=True)
 mse_results = []
@@ -457,13 +331,13 @@ for max_depth in max_depths:
     r2_results.append(score[0])
     mse_results.append(score[1])
 
-plt.figure(figsize=(12,6))
+plt.figure(figsize=(12, 6))
 plt.plot(max_depths, r2_results, 'b', label='R2')
 plt.xlabel('Tree Depth')
 plt.ylabel('R-squared')
 plt.legend()
 plt.show()
-plt.figure(figsize=(12,6))
+plt.figure(figsize=(12, 6))
 plt.plot(max_depths, mse_results, 'r', label='MSE')
 plt.xlabel('Tree Depth')
 plt.ylabel('MSE')
@@ -472,20 +346,19 @@ plt.show()
 ```
 
 
-![png](index_files/index_21_0.png)
+![png](index_files/index_22_0.png)
 
 
 
-![png](index_files/index_21_1.png)
+![png](index_files/index_22_1.png)
 
 
-## More Hyperparameter Tuning 
+## Hyperparameter tuning (II)
 
-- Repeat the above process for `min_samples_split` parameter
-
-- Use a a range of values from 2-10 for this parameter 
+- Repeat the above process for `min_samples_split` 
+- Use a a range of values from 2-10 for this hyperparameter 
 - Use `random_state=45` for reproducibility
-- Visualize the output and comment on results as above
+- Visualize the output and comment on results as above 
 
 
 ```python
@@ -496,7 +369,7 @@ plt.show()
 ```python
 # __SOLUTION__ 
 # Identify the optimal minimum split size for given data
-min_samples_splits = np.arange(2,11)
+min_samples_splits = np.arange(2, 11)
 mse_results = []
 r2_results = []
 
@@ -508,25 +381,25 @@ for min_samples_split in min_samples_splits:
     r2_results.append(score[0])
     mse_results.append(score[1])
 
-plt.figure(figsize=(12,6))
+plt.figure(figsize=(12, 6))
 plt.plot(min_samples_splits, r2_results, 'b', label='R2')
 plt.show()
-plt.figure(figsize=(12,6))
+plt.figure(figsize=(12, 6))
 plt.plot(min_samples_splits, mse_results, 'r', label='MSE')
 plt.show()
 ```
 
 
-![png](index_files/index_24_0.png)
+![png](index_files/index_25_0.png)
 
 
 
-![png](index_files/index_24_1.png)
+![png](index_files/index_25_1.png)
 
 
-# Run the "Optimized" Model 
+# Run the *optimized* model 
 
-- Use the best values for max_depth and min_samples_split found in previous runs and run an optimized model with these values. 
+- Use the best values for `max_depth` and `min_samples_split` found in previous runs and run an optimized model with these values 
 - Calculate the performance and comment on the output 
 
 
@@ -537,7 +410,7 @@ plt.show()
 
 ```python
 # __SOLUTION__ 
-regressor = DecisionTreeRegressor(min_samples_split=6, max_depth=6, random_state=45)
+regressor = DecisionTreeRegressor(min_samples_split=5, max_depth=6, random_state=45)
 regressor.fit(x_train, y_train)
 y_pred = regressor.predict(x_test)
 score = performance(y_test, y_pred)
@@ -547,21 +420,21 @@ score[0], score[1], regressor
 
 
 
-    (0.7510017608643338,
-     18.259982876077185,
+    (0.7515894043185498,
+     18.216888758430127,
      DecisionTreeRegressor(criterion='mse', max_depth=6, max_features=None,
-                max_leaf_nodes=None, min_impurity_decrease=0.0,
-                min_impurity_split=None, min_samples_leaf=1,
-                min_samples_split=6, min_weight_fraction_leaf=0.0,
-                presort=False, random_state=45, splitter='best'))
+                           max_leaf_nodes=None, min_impurity_decrease=0.0,
+                           min_impurity_split=None, min_samples_leaf=1,
+                           min_samples_split=5, min_weight_fraction_leaf=0.0,
+                           presort=False, random_state=45, splitter='best'))
 
 
 
-## Level Up - Optional 
+## Level up (Optional)
 
 - How about bringing in some more features from the original dataset which may be good predictors?
-- Also , try tuning more hyperparameters like max-features to find the optimal version of the model.
+- Also, try tuning more hyperparameters like max-features to find the optimal version of the model 
 
 ## Summary 
 
-In this lab, we looked at applying a decision tree based regression analysis on the Boston Housing Dataset. We saw how to train various models to find the optimal values for pruning and limiting the growth of the trees. We also looked at how to extract some rules from visualizing trees , that might be used for decision making later.
+In this lab, we looked at applying a decision tree based regression analysis on the Boston Housing dataset. We saw how to train various models to find the optimal values for hyperparameters. 
