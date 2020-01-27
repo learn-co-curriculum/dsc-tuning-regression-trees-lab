@@ -10,7 +10,7 @@ In this lab, we'll see how to apply regression analysis using CART trees while m
 In this lab you will: 
 
 - Perform the full process of cleaning data, tuning hyperparameters, creating visualizations, and evaluating decision tree models 
-- Determine the optimal hyperparameters for a decision tree model and evaluate performance 
+- Determine the optimal hyperparameters for a decision tree model and evaluate the performance of decision tree models
 
 ## Boston Housing dataset - again! 
 
@@ -49,7 +49,7 @@ In this lab, we will use three features from the Boston housing dataset: `'RM'`,
 #### Target
 - `MEDV`',the median value of the home 
 
-- Create DataFrames for features and target as shown above 
+- Create DataFrames for the features and the target variable as shown above 
 - Inspect the contents for validity 
 
 
@@ -62,7 +62,7 @@ features = None
 
 ## Inspect correlations 
 
-- Use scatter plots to show the correlation between chosen features and target variable
+- Use scatter plots to show the correlation between the chosen features and the target variable
 - Comment on each scatter plot 
 
 
@@ -73,7 +73,7 @@ features = None
 ## Create evaluation metrics
 
 - Import `r2_score` and `mean_squared_error` from `sklearn.metrics` 
-- Create a function `performance(true, predicted)` to calculate and return the r-squared score and MSE for two equal sized arrays for the given true and predicted values 
+- Create a function `performance(true, predicted)` to calculate and return the r-squared score and MSE for two equal-sized arrays for the given true and predicted values 
 
 
 ```python
@@ -147,11 +147,11 @@ score
 
 ## Hyperparameter tuning (I)
 
-- Find the best tree depth for a depth range: 1-30
+- Find the best tree depth using depth range: 1-30
 - Run the regressor repeatedly in a `for` loop for each depth value  
 - Use `random_state=45` for reproducibility
 - Calculate MSE and r-squared for each run 
-- Plot both performance measures, for all runs 
+- Plot both performance measures for all runs 
 - Comment on the output 
 
 
@@ -162,7 +162,7 @@ score
 ## Hyperparameter tuning (II)
 
 - Repeat the above process for `min_samples_split` 
-- Use a a range of values from 2-10 for this hyperparameter 
+- Use a range of values from 2-10 for this hyperparameter 
 - Use `random_state=45` for reproducibility
 - Visualize the output and comment on results as above 
 
@@ -184,8 +184,8 @@ score
 ## Level up (Optional)
 
 - How about bringing in some more features from the original dataset which may be good predictors?
-- Also, try tuning more hyperparameters like max-features to find the optimal version of the model 
+- Also, try tuning more hyperparameters like max-features to find a more optimal version of the model 
 
 ## Summary 
 
-In this lab, we looked at applying a decision tree based regression analysis on the Boston Housing dataset. We saw how to train various models to find the optimal values for hyperparameters. 
+In this lab, we looked at applying a decision-tree-based regression analysis on the Boston Housing dataset. We saw how to train various models to find the optimal values for hyperparameters. 
